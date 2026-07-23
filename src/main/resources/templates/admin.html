@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymleaf.org" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Admin Dashboard</title>
 </head>
 <body>
-    <section class="container mt-5 text-center">
-        <h1 class="mb-3 ">Admin Dashboard</h1>
-        <h2 class="mb-3">Details</h2>
-        <div class="d-flex flex-column flex-md-row justify-content-start">
-            <a href="/admin/user_list" class="btn btn-primary me-md-2 mb-2 mb-md-0">UserList</a>
-            <a href="/admin/add_product" class="btn btn-primary me-md-2 mb-2 mb-md-0">AddProduct</a>
-            <a href="/admin/get_product" class="btn btn-primary me-md-2 mb-2 mb-md-0">GetProduct</a>
-            <a href="/admin/logout" class="btn btn-danger">Logout</a>
+    <section class="container py-5 text-center">
+        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+            <h1 class="display-5 fw-bold mb-3">Admin Management Hub</h1>
+            <p class="fs-5 text-muted mb-4">Select an option below to manage products, view registered users, or edit system settings.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a th:href="@{/admin/user_list}" class="btn btn-primary btn-lg"><i class="fa-solid fa-users me-2"></i>User List</a>
+                <a th:href="@{/admin/add_product}" class="btn btn-success btn-lg"><i class="fa-solid fa-plus me-2"></i>Add Product</a>
+                <a th:href="@{/admin/get_product}" class="btn btn-info text-white btn-lg"><i class="fa-solid fa-boxes-stacked me-2"></i>Inventory</a>
+                <a th:href="@{/admin/logout}" class="btn btn-danger btn-lg"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+            </div>
         </div>
     </section>
 </body>

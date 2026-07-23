@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
-    <!-- Bootstrap CSS -->
 </head>
 <body>
-    <section class="text-center">
-        <div class="container mt-5 p-5">
-            <h1 class="fs-4 text-center mb-4">Add New Product</h1>
-            <form th:action="@{/admin/add_product}" th:object="${product}" method="post" class="mx-auto col-md-6" enctype="multipart/form-data">
-                <div class="row p-3"> 
-                    <div class="col">
-                        <label class="form-label" for="productName">Product Name:</label>
-                        <input class="form-control" type="text" id="productName" th:field="*{productName}" required placeholder="Enter product name" />
+    <section class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm rounded-3 border-0">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h4 class="mb-0 text-center fw-bold">Add New Product</h4>
                     </div>
-                    <div class="col">
-                        <label class="form-label" for="price">Price:</label>
-                        <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}" required placeholder="Enter product price" />
+                    <div class="card-body p-4">
+                        <form th:action="@{/admin/add_product}" th:object="${product}" method="post" enctype="multipart/form-data">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" for="productName">Product Name</label>
+                                    <input class="form-control" type="text" id="productName" th:field="*{productName}" required placeholder="Wireless Headphones" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" for="price">Price ($)</label>
+                                    <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}" required placeholder="99.99" />
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" for="quantity">Quantity</label>
+                                    <input class="form-control" type="number" id="quantity" th:field="*{quantity}" required placeholder="50" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold" for="productImage">Product Image File</label>
+                                    <input class="form-control" type="file" id="productImage" name="image" required />
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" for="productDescription">Description</label>
+                                <textarea class="form-control" id="productDescription" rows="3" th:field="*{productDescription}" required placeholder="Enter item details..."></textarea>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg fw-bold">Submit Product</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light text-center py-3">
+                        <a th:href="@{/admin/admin_dash}" class="text-decoration-none">← Back to Admin Dashboard</a>
                     </div>
                 </div>
-                <div class="row p-3">
-                    <div class="col">
-                        <label class="form-label" for="quantity">Quantity:</label>
-                        <input class="form-control" type="number" step="0" id="quantity" th:field="*{quantity}" required placeholder="Enter product price" />
-                    </div>
-                    <div class="col">
-                        <label class="form-label" for="productDescription">Product Description:</label>
-                        <textarea class="form-control" tyep="text" id="productDescription" th:field="*{productDescription}" required placeholder="Enter product description"></textarea>
-                    </div>
-                </div>
-                <div class="row p-3">
-                    <div class="col">
-                        <label class="form-label" for="productImage">Product Image:</label>
-                        <input class="form-control" type="file" id="productImage" name="image" required/>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary col-md-3">Add Product</button>
-            </form>
-            <div class="card-footer text-center">
-                <a href="/admin/admin_dash" class="text-decoration-none">Admin Dashboard</a>
             </div>
         </div>
     </section>

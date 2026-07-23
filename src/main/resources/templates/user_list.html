@@ -1,47 +1,164 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymleaf.org" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Directory</title>
 </head>
-<head>
-    <section>
-        <h1 class="text-center mt-5 mb-5">Admin Dashboard</h1>
-        <h2 class="text-center mb-4">User Details</h2>
-    
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Gender</th>
-                        <th>Password</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="user : ${users}">
-                        <td th:text="${user.userId}"></td>
-                        <td th:text="${user.userName}"></td>
-                        <td th:text="${user.emailId}"></td>
-                        <td th:text="${user.phoneNumber}"></td>
-                        <td th:text="${user.gender}"></td>
-                        <td th:text="${user.password}"></td>
-                        <td>
-                            <form th:action="@{/admin/delete_user/{id}(id=${user.userId})}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<body>
+    <section class="container-fluid py-5 directory-wrapper">
+        
+        <style>
+            /* Dynamic Blue-to-Teal Canvas Background */
+            .directory-wrapper {
+                min-height: 85vh;
+                background: linear-gradient(135deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Floating White Card Container */
+            .directory-card {
+                background: #ffffff;
+                border-radius: 16px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+                border: none;
+                width: 100%;
+                max-width: 1000px;
+                padding: 2.5rem;
+            }
+
+            /* Gradient Title Header */
+            .directory-title {
+                color: #0082c8;
+                font-size: 1.8rem;
+                letter-spacing: -0.5px;
+                position: relative;
+            }
+
+            .directory-title::after {
+                content: '';
+                display: block;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, #0082c8, #00ecbc);
+                margin: 8px auto 0 auto;
+                border-radius: 2px;
+            }
+
+            /* Modern Teal Minimalist Table */
+            .table-modern {
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            .table-modern thead th {
+                background-color: transparent;
+                color: #0082c8;
+                font-weight: 700;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                border-bottom: 2px solid #e2e8f0;
+                padding-bottom: 12px;
+            }
+
+            .table-modern tbody tr {
+                transition: all 0.2s ease;
+            }
+
+            .table-modern tbody tr:hover {
+                background-color: #f8fafc;
+            }
+
+            .table-modern td {
+                padding: 1rem 0.75rem;
+                color: #334155;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.92rem;
+            }
+
+            /* Teal Accent Action Button */
+            .btn-delete-teal {
+                background: transparent;
+                border: 1px solid #00ecbc;
+                color: #00a884;
+                font-weight: 600;
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
+                border-radius: 20px;
+                transition: all 0.25s ease;
+            }
+
+            .btn-delete-teal:hover {
+                background: linear-gradient(90deg, #0082c8, #00ecbc);
+                color: #ffffff;
+                border-color: transparent;
+                box-shadow: 0 4px 12px rgba(0, 236, 188, 0.4);
+            }
+
+            /* Back Button Link */
+            .btn-back-link {
+                color: #0082c8;
+                font-weight: 600;
+                font-size: 0.9rem;
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+
+            .btn-back-link:hover {
+                color: #00ecbc;
+            }
+        </style>
+
+        <div class="directory-card">
+            
+            <!-- Header Title -->
+            <div class="text-center mb-4">
+                <h2 class="fw-bold directory-title mb-1">• Registered Accounts •</h2>
+                <p class="text-muted small mt-2">Manage all signed-up user profiles and system permissions.</p>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-responsive">
+                <table class="table table-modern align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-3">ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Gender</th>
+                            <th class="text-end pe-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td class="ps-3 fw-bold text-primary" th:text="${user.userId}">1</td>
+                            <td class="fw-semibold" th:text="${user.userName}">john_doe</td>
+                            <td th:text="${user.emailId}">john@example.com</td>
+                            <td th:text="${user.phoneNumber}">1234567890</td>
+                            <td class="text-capitalize" th:text="${user.gender}">Male</td>
+                            <td class="text-end pe-3">
+                                <form th:action="@{/admin/delete_user/{id}(id=${user.userId})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-delete-teal">
+                                        <i class="fa-solid fa-user-minus me-1"></i>Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Card Footer Link -->
+            <div class="text-center mt-4 pt-3 border-top border-light">
+                <a th:href="@{/admin/admin_dash}" class="btn-back-link">
+                    ← Back to Admin Dashboard
+                </a>
+            </div>
+
         </div>
-        <div class="card-footer text-center">
-            <a href="/admin/admin_dash" class="text-decoration-none">Admin Dashboard</a>
-        </div>
+
     </section>
-</head>
+</body>
+</html>

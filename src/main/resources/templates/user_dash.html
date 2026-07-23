@@ -1,52 +1,276 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{base::layout(~{::section})}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Dashboard - Aura Tech</title>
 </head>
 <body>
-    <section class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="jumbotron text-center">
-                    <h1 class="display-4">Welcome to User Dashboard</h1>
-                    <p class="lead">Manage your account and explore our features</p>
+    <section class="container py-5">
+        
+        <style>
+            /* Full-Page Background using Metallic Blue Honeycomb Grid */
+            body {
+                background: linear-gradient(135deg, rgba(10, 18, 28, 0.82), rgba(8, 14, 22, 0.90)),
+                            url('image_dff1a6.jpg') center/cover no-repeat fixed !important;
+                color: #e2e8f0;
+            }
+
+            /* Dashboard Wrapper & Ambient Cyan Radial Glow */
+            .dashboard-wrapper {
+                position: relative;
+            }
+
+            .dashboard-wrapper::before {
+                content: '';
+                position: absolute;
+                top: -80px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 700px;
+                height: 350px;
+                background: radial-gradient(circle, rgba(0, 183, 255, 0.22) 0%, rgba(0, 119, 255, 0.08) 50%, rgba(0, 0, 0, 0) 70%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            /* Transparent Glass Header Banner */
+            .dash-glass-banner {
+                position: relative;
+                z-index: 1;
+                background: rgba(12, 22, 34, 0.55);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(0, 183, 255, 0.25);
+                border-radius: 24px;
+                padding: 2.5rem;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            }
+
+            .avatar-glow-ring {
+                width: 85px;
+                height: 85px;
+                background: rgba(0, 183, 255, 0.12);
+                border: 2px solid #00c8ff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.2rem;
+                color: #00c8ff;
+                box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+            }
+
+            /* Transparent Stats Strip */
+            .stats-glass-strip {
+                position: relative;
+                z-index: 1;
+                background: rgba(12, 22, 34, 0.45);
+                border: 1px solid rgba(0, 183, 255, 0.18);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-radius: 18px;
+                padding: 1.2rem 2rem;
+            }
+
+            .stat-num {
+                font-size: 1.6rem;
+                font-weight: 800;
+                color: #ffffff;
+                line-height: 1;
+            }
+
+            .stat-txt {
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: #94a3b8;
+                margin-top: 0.3rem;
+            }
+
+            /* Metallic Glass Cards */
+            .transparent-card {
+                position: relative;
+                z-index: 1;
+                background: rgba(12, 22, 34, 0.5);
+                border: 1px solid rgba(0, 183, 255, 0.18);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border-radius: 20px;
+                min-height: 280px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                transition: all 0.35s ease;
+            }
+
+            .transparent-card:hover {
+                transform: translateY(-8px);
+                background: rgba(16, 28, 44, 0.65);
+                border-color: rgba(0, 200, 255, 0.6);
+                box-shadow: 0 15px 35px rgba(0, 183, 255, 0.25);
+            }
+
+            .card-inner-content {
+                padding: 2.2rem 1.6rem;
+                text-align: center;
+            }
+
+            .glowing-icon {
+                width: 60px;
+                height: 60px;
+                background: rgba(0, 183, 255, 0.12);
+                border: 1px solid rgba(0, 200, 255, 0.35);
+                border-radius: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.2rem auto;
+                color: #00c8ff;
+                font-size: 1.5rem;
+                box-shadow: 0 0 20px rgba(0, 183, 255, 0.3);
+            }
+
+            /* Electric Blue Glass Buttons */
+            .btn-glass-blue {
+                width: 100%;
+                background: rgba(0, 183, 255, 0.15);
+                color: #ffffff;
+                font-weight: 700;
+                font-size: 0.8rem;
+                letter-spacing: 1.2px;
+                padding: 0.75rem 0;
+                border-radius: 12px;
+                border: 1px solid rgba(0, 200, 255, 0.4);
+                text-transform: uppercase;
+                text-decoration: none;
+                display: inline-block;
+                transition: all 0.25s ease;
+                backdrop-filter: blur(8px);
+            }
+
+            .btn-glass-blue:hover {
+                background-color: #00c8ff;
+                border-color: #00c8ff;
+                color: #080e16;
+                box-shadow: 0 6px 20px rgba(0, 200, 255, 0.45);
+            }
+
+            /* Logout Button */
+            .btn-logout-ghost {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                backdrop-filter: blur(10px);
+                color: #f87171;
+                border-radius: 30px;
+                padding: 0.65rem 2.8rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+                transition: all 0.25s ease;
+                text-decoration: none;
+            }
+
+            .btn-logout-ghost:hover {
+                background: #e53935;
+                border-color: #e53935;
+                color: #ffffff;
+                box-shadow: 0 5px 20px rgba(229, 57, 53, 0.4);
+            }
+        </style>
+
+        <div class="dashboard-wrapper">
+            
+            <!-- Transparent Glass Hero Banner -->
+            <div class="dash-glass-banner mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-auto text-center text-md-start mb-3 mb-md-0">
+                        <div class="avatar-glow-ring mx-auto">
+                            <i class="fa-solid fa-sliders"></i>
+                        </div>
+                    </div>
+                    <div class="col-md text-center text-md-start">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-2">
+                            <span class="badge bg-info text-dark text-uppercase px-2 py-1" style="font-size: 0.65rem; letter-spacing: 1px; font-weight: 800;">AURA PASS ACTIVE</span>
+                            <span class="text-light opacity-50 small">• Premium Member</span>
+                        </div>
+                        <h2 class="fw-bold text-white mb-1">Welcome Back, Sai Ram!</h2>
+                        <p class="text-light opacity-75 mb-0 small">Access your personalized dashboard, equipment orders, and stream settings.</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Transparent Glass Stats Bar -->
+            <div class="stats-glass-strip mb-5">
+                <div class="row text-center g-3">
+                    <div class="col-4 border-end border-secondary border-opacity-25">
+                        <div class="stat-num">02</div>
+                        <div class="stat-txt">Active Orders</div>
+                    </div>
+                    <div class="col-4 border-end border-secondary border-opacity-25">
+                        <div class="stat-num">05</div>
+                        <div class="stat-txt">Notifications</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-num" style="color: #00c8ff;">VIP</div>
+                        <div class="stat-txt">Account Tier</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transparent Glass Cards -->
+            <div class="row g-4">
+                
+                <!-- Card 1: Profile Details -->
+                <div class="col-md-4">
+                    <div class="transparent-card shadow">
+                        <div class="card-inner-content">
+                            <div class="glowing-icon">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </div>
+                            <h5 class="fw-bold text-white mb-2">Profile Details</h5>
+                            <p class="text-light opacity-75 small mb-4">Manage personal details, security credentials, and passwords.</p>
+                            <a href="#" class="btn-glass-blue">Edit Profile</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: My Orders -->
+                <div class="col-md-4">
+                    <div class="transparent-card shadow">
+                        <div class="card-inner-content">
+                            <div class="glowing-icon">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <h5 class="fw-bold text-white mb-2">My Orders</h5>
+                            <p class="text-light opacity-75 small mb-4">Track shipment status, past receipts, and order history.</p>
+                            <a href="#" class="btn-glass-blue">Order History</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Notifications -->
+                <div class="col-md-4">
+                    <div class="transparent-card shadow">
+                        <div class="card-inner-content">
+                            <div class="glowing-icon">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <h5 class="fw-bold text-white mb-2">Notifications</h5>
+                            <p class="text-light opacity-75 small mb-4">Check account alerts, system messages, and store updates.</p>
+                            <a href="#" class="btn-glass-blue">View Messages</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Logout Section -->
+            <div class="mt-5 text-center">
+                <a th:href="@{/login}" class="btn btn-logout-ghost">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>LOGOUT
+                </a>
+            </div>
+
         </div>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Profile</h5>
-                        <p class="card-text">View and edit your profile information</p>
-                        <a href="#" class="btn btn-primary">Go to Profile</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Settings</h5>
-                        <p class="card-text">Customize your account settings</p>
-                        <a href="#" class="btn btn-primary">Go to Settings</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Messages</h5>
-                        <p class="card-text">Check your inbox and send messages</p>
-                        <a href="#" class="btn btn-primary">Go to Messages</a>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <a href="/login" class="btn btn-danger">Logout</a>
-            </div>
-        </div>
+
     </section>
 </body>
 </html>
