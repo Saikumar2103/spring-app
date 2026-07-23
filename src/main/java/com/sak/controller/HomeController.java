@@ -52,16 +52,20 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public ModelAndView getlogin(@RequestParam String userName, @RequestParam String password) {
-        User auth = userService.authenticate(userName, password);
-        if(auth != null) {
-            return new ModelAndView("user_dash");
-        } 
-        if(userName.equals("admin") && password.equals("admin")){
-            return new ModelAndView("redirect:/admin/admin_dash");
-        }
-        else {
-            return new ModelAndView("/login").addObject("error", "Invalid credentials. Please try again.");
-        }
+public ModelAndView getlogin(@RequestParam String userName,
+                             @RequestParam String password) {
+
+    User auth = userService.authenticate(userName, password);
+
+    if (auth != null) {
+        return new ModelAndView("home");
     }
+
+    if (userName.equals("admin") && password.equals("admin")) {
+        return new ModelAndView("redirect:/admin/admin_dash");
+    }
+
+    return new ModelAndView("login")
+            .addObject("error", "Invalid credentials");
+}
 }
