@@ -1,0 +1,220 @@
+pipeline {
+
+
+    agent any
+
+
+    environment {
+
+        NAMESPACE = "production"
+
+    }
+
+
+
+    parameters {
+
+
+        choice(
+
+            name: 'ACTION',
+
+            choices: [
+
+                'Deploy Database',
+
+                'Deploy Application',
+
+                'Delete Application',
+
+                'Delete Database'
+
+            ],
+
+            description: 'Select Kubernetes Action'
+
+        )
+
+    }
+
+
+
+
+    stages {
+
+
+
+        stage('Create Namespace') {
+
+
+            steps {
+
+
+                sh """
+
+                kubectl apply \
+                -f k8s/namespace.yaml
+
+                """
+
+
+            }
+
+        }
+
+
+
+
+
+        stage('Kubernetes Deployment') {
+
+
+            steps {
+
+
+                script {
+
+
+                    if(params.ACTION == 'Deploy Database') {
+
+
+
+                        sh """
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-pv.yaml
+
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-pvc.yaml
+
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-statefulset.yaml
+
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-service.yaml
+
+
+                        """
+
+
+
+                    }
+
+
+
+                    else if(params.ACTION == 'Deploy Application') {
+
+
+
+                        sh """
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/app-deployment.yaml
+
+
+                        kubectl apply \
+                        -n ${NAMESPACE} \
+                        -f k8s/app-service.yaml
+
+
+                        """
+
+                    }
+
+
+
+
+                    else if(params.ACTION == 'Delete Application') {
+
+
+
+                        sh """
+
+                        kubectl delete \
+                        -n ${NAMESPACE} \
+                        -f k8s/app-service.yaml
+
+
+                        kubectl delete \
+                        -n ${NAMESPACE} \
+                        -f k8s/app-deployment.yaml
+
+
+                        """
+
+                    }
+
+
+
+
+                    else {
+
+
+
+                        sh """
+
+                        kubectl delete \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-statefulset.yaml
+
+
+                        kubectl delete \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-service.yaml
+
+
+                        kubectl delete \
+                        -n ${NAMESPACE} \
+                        -f k8s/mysql-pvc.yaml
+
+
+                        kubectl delete \
+                        -f k8s/mysql-pv.yaml
+
+
+                        """
+
+                    }
+
+                }
+
+
+            }
+
+        }
+
+
+
+    }
+
+
+
+    post {
+
+
+        success {
+
+            echo "Kubernetes operation completed"
+
+        }
+
+
+        failure {
+
+            echo "Deployment Failed"
+
+        }
+
+
+    }
+
+
+}
