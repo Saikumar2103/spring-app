@@ -25,17 +25,14 @@ spec:
             - containerPort: 3306
 
           env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "root123"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root123"
 
-            - name: MYSQL_DATABASE
-              value: "snapchatdb"
+        - name: MYSQL_DATABASE
+          value: "snapchatdb"
 
-          volumeMounts:
-            - name: mysql-storage
-              mountPath: /var/lib/mysql
+        - name: MYSQL_USER
+          value: "springuser"
 
-      volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-pvc
+        - name: MYSQL_PASSWORD
+          value: "spring123"
