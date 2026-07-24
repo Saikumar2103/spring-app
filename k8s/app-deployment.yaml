@@ -18,21 +18,48 @@ spec:
 
     spec:
       containers:
-      - name: springboot-container
+        - name: springboot-container
+          image: saikumar004/snapchat-sak-cicd-docker:latest
+          imagePullPolicy: Always
 
-        image: saikumar004/snapchat-sak-cicd-docker:latest
+          ports:
+            - containerPort: 8080
 
-        imagePullPolicy: Always
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-service:3306/snapchatdb?createDatabaseIfNotExist=true
 
-        ports:
-        - containerPort: 8080
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
 
-        env:
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://mysql-service:3306/snapchatdb
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root123
 
-        - name: SPRING_DATASOURCE_USERNAME
-          value: root
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
 
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: root123
+            - name: SPRING_JPA_SHOW_SQL
+              value: "true"
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20

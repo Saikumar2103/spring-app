@@ -18,26 +18,24 @@ spec:
 
     spec:
       containers:
-      - name: mysql
+        - name: mysql
+          image: mysql:8.0
 
-        image: mysql:8.0
+          ports:
+            - containerPort: 3306
 
-        ports:
-        - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root123"
 
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: root123
+            - name: MYSQL_DATABASE
+              value: "snapchatdb"
 
-        - name: MYSQL_DATABASE
-          value: snapchatdb
-
-        volumeMounts:
-        - name: mysql-storage
-          mountPath: /var/lib/mysql
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
 
       volumes:
-      - name: mysql-storage
-
-        persistentVolumeClaim:
-          claimName: mysql-pvc
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
