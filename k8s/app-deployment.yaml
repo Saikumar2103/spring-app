@@ -1,46 +1,64 @@
-containers:
-  - name: springboot-container
-    image: saikumar004/snapchat-sak-cicd-docker:latest
-    imagePullPolicy: Always
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app
+  namespace: production
 
-    ports:
-      - containerPort: 8080
+spec:
+  replicas: 2
 
-    env:
-      - name: SPRING_DATASOURCE_URL
-        value: jdbc:mysql://mysql-service:3306/snapchatdb?createDatabaseIfNotExist=true
+  selector:
+    matchLabels:
+      app: springboot
 
-      - name: SPRING_DATASOURCE_USERNAME
-        value: springuser
+  template:
+    metadata:
+      labels:
+        app: springboot
 
-      - name: SPRING_DATASOURCE_PASSWORD
-        value: spring123
+    spec:
+      containers:
+        - name: springboot-container
+          image: saikumar004/snapchat-sak-cicd-docker:latest
+          imagePullPolicy: Always
 
-      - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-        value: update
+          ports:
+            - containerPort: 8080
 
-      - name: SPRING_JPA_SHOW_SQL
-        value: "true"
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql-service:3306/snapchatdb?createDatabaseIfNotExist=true"
 
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "250m"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "springuser"
 
-      limits:
-        memory: "1Gi"
-        cpu: "500m"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "spring123"
 
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 8080
-      initialDelaySeconds: 30
-      periodSeconds: 10
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "update"
 
-    livenessProbe:
-      httpGet:
-        path: /
-        port: 8080
-      initialDelaySeconds: 60
-      periodSeconds: 20
+            - name: SPRING_JPA_SHOW_SQL
+              value: "true"
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
