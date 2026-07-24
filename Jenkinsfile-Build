@@ -1,0 +1,88 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven'
+    }
+
+    environment {
+        IMAGE_NAME = "snapchat-sak-cicd-docker"
+        DOCKER_REPO = "saikumar004"
+        IMAGE_TAG = "latest"
+    }
+
+    stages {
+
+        stage('Prepare Build') {
+            steps {
+                echo "Preparing Build..."
+                sh 'mvn clean'
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                sh 'mvn package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-cred-id',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+
+                    sh '''
+                    echo "$PASS" | docker login -u "$USER" --password-stdin
+                    '''
+                }
+            }
+        }
+
+        stage('Tag Docker Image') {
+            steps {
+                sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh "docker push ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_TAG}"
+            }
+        }
+
+        stage('Docker Logout') {
+            steps {
+                sh 'docker logout'
+            }
+        }
+
+        stage('Clean System') {
+            steps {
+                sh """
+                docker image rm ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_TAG} || true
+                docker image rm ${IMAGE_NAME}:${IMAGE_TAG} || true
+                docker system prune -f
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Docker Image Successfully Uploaded"
+        }
+
+        failure {
+            echo "Pipeline Failed"
+        }
+    }
+}

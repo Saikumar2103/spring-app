@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        NAMESPACE = "production"
+    }
+
+    parameters {
+        choice(
+            name: 'ACTION',
+            choices: [
+                'Deploy Application',
+                'Deploy Database',
+                'Remove Application',
+                'Remove Database'
+            ],
+            description: 'Choose Action'
+        )
+    }
+
+    stages {
+
+        stage('Create Namespace') {
+            steps {
+                sh "kubectl apply -f k8s/namespace.yaml"
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+
+                    if (params.ACTION == "Deploy Database") {
+
+                        sh """
+                        kubectl apply -n ${NAMESPACE} -f k8s/pv.yaml
+                        kubectl apply -n ${NAMESPACE} -f k8s/pvc.yaml
+                        kubectl apply -n ${NAMESPACE} -f k8s/mysql-service.yaml
+                        kubectl apply -n ${NAMESPACE} -f k8s/mysql-statefulset.yaml
+                        """
+
+                    } else if (params.ACTION == "Deploy Application") {
+
+                        sh """
+                        kubectl apply -n ${NAMESPACE} -f k8s/app-deployment.yaml
+                        kubectl apply -n ${NAMESPACE} -f k8s/app-service.yaml
+                        """
+
+                    } else if (params.ACTION == "Remove Application") {
+
+                        sh """
+                        kubectl delete -n ${NAMESPACE} -f k8s/app-service.yaml
+                        kubectl delete -n ${NAMESPACE} -f k8s/app-deployment.yaml
+                        """
+
+                    } else {
+
+                        sh """
+                        kubectl delete -n ${NAMESPACE} -f k8s/mysql-statefulset.yaml
+                        kubectl delete -n ${NAMESPACE} -f k8s/mysql-service.yaml
+                        kubectl delete -n ${NAMESPACE} -f k8s/pvc.yaml
+                        kubectl delete -f k8s/pv.yaml
+                        """
+
+                    }
+                }
+            }
+        }
+    }
+}
