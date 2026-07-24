@@ -4,17 +4,65 @@
     <title>Admin Dashboard</title>
 </head>
 <body>
-    <section class="container py-5 text-center">
-        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+    <section class="container py-5">
+        
+        <!-- Hero Welcome Header -->
+        <div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
             <h1 class="display-5 fw-bold mb-3">Admin Management Hub</h1>
             <p class="fs-5 text-muted mb-4">Select an option below to manage products, view registered users, or edit system settings.</p>
-            <div class="d-flex flex-wrap justify-content-center gap-3">
-                <a th:href="@{/admin/user_list}" class="btn btn-primary btn-lg"><i class="fa-solid fa-users me-2"></i>User List</a>
-                <a th:href="@{/admin/add_product}" class="btn btn-success btn-lg"><i class="fa-solid fa-plus me-2"></i>Add Product</a>
-                <a th:href="@{/admin/get_product}" class="btn btn-info text-white btn-lg"><i class="fa-solid fa-boxes-stacked me-2"></i>Inventory</a>
-                <a th:href="@{/admin/logout}" class="btn btn-danger btn-lg"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
+                <a th:href="@{/admin/user_list}" class="btn btn-primary btn-lg">
+                    <i class="fa-solid fa-users me-2"></i>User List
+                </a>
+                <a th:href="@{/admin/add_product}" class="btn btn-success btn-lg">
+                    <i class="fa-solid fa-plus me-2"></i>Add Product
+                </a>
+                <a th:href="@{/admin/get_product}" class="btn btn-info text-white btn-lg">
+                    <i class="fa-solid fa-boxes-stacked me-2"></i>Inventory
+                </a>
+
+                <!-- Form-based Logout (Spring Security standard) -->
+                <form th:action="@{/admin/logout}" method="post" class="d-inline">
+                    <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+                    </button>
+                </form>
             </div>
         </div>
+
+        <!-- Optional Dashboard Metrics Grid -->
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-users text-primary fa-2x mb-3"></i>
+                        <h6 class="text-muted text-uppercase fw-semibold mb-1">Total Users</h6>
+                        <h3 class="fw-bold mb-0" th:text="${totalUsers != null} ? ${totalUsers} : '0'">120</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-boxes-stacked text-info fa-2x mb-3"></i>
+                        <h6 class="text-muted text-uppercase fw-semibold mb-1">Products Listed</h6>
+                        <h3 class="fw-bold mb-0" th:text="${totalProducts != null} ? ${totalProducts} : '0'">45</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-triangle-exclamation text-warning fa-2x mb-3"></i>
+                        <h6 class="text-muted text-uppercase fw-semibold mb-1">Low Stock Alerts</h6>
+                        <h3 class="fw-bold mb-0" th:text="${lowStockCount != null} ? ${lowStockCount} : '0'">3</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 </body>
 </html>

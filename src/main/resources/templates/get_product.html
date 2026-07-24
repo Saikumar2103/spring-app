@@ -1,52 +1,79 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{base::layout(~{::section})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 <head>
-    <title>Product List</title>
+    <title>Watch Inventory Catalog</title>
 </head>
 <body>
-    <section class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold m-0">Inventory List</h2>
-            <a th:href="@{/admin/add_product}" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i> Add Product</a>
+<section class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold brand-font mb-1">Timepiece Inventory</h2>
+            <p class="text-muted small mb-0">Manage current luxury watch stock and listings</p>
         </div>
-        <div class="card shadow-sm border-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="ps-3">ID</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th class="text-end pe-3">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="product : ${products}">
-                            <td class="ps-3 fw-bold" th:text="${product.productId}">1</td>
-                            <td>
-                                <img th:if="${product.base64Image}" th:src="'data:image/jpeg;base64,' + ${product.base64Image}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="Image"/>
-                                <img th:unless="${product.base64Image}" src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=100&q=80" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="Placeholder"/>
-                            </td>
-                            <td class="fw-semibold" th:text="${product.productName}">Name</td>
-                            <td class="text-muted" th:text="${product.productDescription}">Desc</td>
-                            <td class="text-success fw-bold" th:text="'$' + ${product.price}">$0.00</td>
-                            <td th:text="${product.quantity}">0</td>
-                            <td class="text-end pe-3">
-                                <form th:action="@{/admin/delete_product/{id}(id=${product.productId})}" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash me-1"></i>Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer text-center bg-white py-3">
-                <a th:href="@{/admin/admin_dash}" class="text-decoration-none">← Back to Admin Dashboard</a>
+
+        <a th:href="@{/admin/add_product}" class="btn btn-gold">
+            <i class="fa-solid fa-plus me-1"></i> Add New Watch
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4" th:each="product : ${products}">
+            <div class="card shadow-sm h-100 border-0 rounded-3 overflow-hidden">
+                <img th:if="${product.base64Image}"
+                     th:src="'data:image/jpeg;base64,' + ${product.base64Image}"
+                     class="card-img-top"
+                     style="height:260px; object-fit:cover;">
+
+                <img th:unless="${product.base64Image}"
+                     src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=600"
+                     class="card-img-top"
+                     style="height:260px; object-fit:cover;">
+
+                <div class="card-body">
+                    <h4 class="fw-bold brand-font mb-2" th:text="${product.productName}">
+                        Rolex Submariner
+                    </h4>
+
+                    <p class="text-muted small" th:text="${product.productDescription}">
+                        Diver's watch with ceramic bezel and oyster bracelet.
+                    </p>
+
+                    <hr class="my-3">
+
+                    <p class="mb-1">
+                        <strong>Timepiece ID:</strong>
+                        <span class="text-secondary" th:text="${product.productId}"></span>
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Price:</strong>
+                        <span class="text-success fw-bold">₹ <span th:text="${product.price}"></span></span>
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>In Stock:</strong>
+                        <span class="badge bg-dark" th:text="${product.quantity}"></span> units
+                    </p>
+                </div>
+
+                <div class="card-footer bg-light border-0 p-3">
+                    <form th:action="@{/admin/delete_product/{id}(id=${product.productId})}" method="post">
+                        <button class="btn btn-outline-danger btn-sm w-100 fw-bold">
+                            <i class="fa-solid fa-trash-can me-1"></i> Remove Model
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div class="text-center mt-4">
+        <a th:href="@{/admin/admin_dash}" class="btn btn-secondary px-4">
+            Back to Dashboard
+        </a>
+    </div>
+
+</section>
 </body>
 </html>

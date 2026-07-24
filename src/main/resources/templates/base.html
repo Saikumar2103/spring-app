@@ -3,76 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Tech</title>
+    <title>Chrono Lux | Executive Men's Timepieces</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-dark: #0a1118;
+            --bg-card: #121c26;
+            --accent-gold: #c5a059;
+            --accent-gold-hover: #e0b86c;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
         body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            background-color: #f8fafc;
         }
-        main { flex: 1 0 auto; }
-        .hero-banner {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            border-radius: 1rem;
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Cinzel', serif;
         }
-        .product-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid #e2e8f0;
+
+        /* Navbar Styling */
+        .navbar-custom {
+            background-color: rgba(10, 17, 24, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+
+        .navbar-brand {
+            color: var(--accent-gold) !important;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 1.4rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-gold) !important;
+        }
+
+        /* Luxury Button Primary */
+        .btn-gold {
+            background: linear-gradient(135deg, #c5a059 0%, #a37f3a 100%);
+            color: #0a1118;
+            font-weight: 600;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e0b86c 0%, #c5a059 100%);
+            color: #0a1118;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #05080c;
+            border-top: 1px solid rgba(197, 160, 89, 0.15);
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <!-- Shared Men's Watch Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" th:href="@{/}">
-                <i class="fa-solid fa-bolt me-2 text-warning"></i>AURA TECH
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                <i class="fa-solid fa-clock me-2"></i>CHRONO LUX
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+            <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house me-1"></i> Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/admin_dash}"><i class="fa-solid fa-shield-halved me-1"></i> Admin Dashboard</a>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item"><a class="nav-link px-3" th:href="@{/}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" th:href="@{/admin/get_product}">Collections</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" th:href="@{/login}">Account</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a th:href="@{/login}" class="btn btn-gold btn-sm"><i class="fa-solid fa-user me-1"></i> Sign In</a>
                     </li>
                 </ul>
-                <div class="d-flex gap-2">
-                    <a th:href="@{/login}" class="btn btn-outline-light btn-sm px-3"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a>
-                    <a th:href="@{/signup}" class="btn btn-primary btn-sm px-3"><i class="fa-solid fa-user-plus me-1"></i> Register</a>
-                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Dynamic Content -->
-    <main class="py-4">
-        <div th:replace="${content}"></div>
-    </main>
+    <!-- Page Content Injection Target -->
+    <main th:replace="${content}"></main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-auto">
-        <div class="container text-center">
-            <p class="mb-1">© 2026 Aura Tech. All rights reserved.</p>
-            <small class="text-muted">Built with Spring Boot & Thymeleaf</small>
+    <footer class="py-4 text-center text-muted small">
+        <div class="container">
+            <p class="mb-1" style="color: var(--accent-gold); font-family: 'Cinzel', serif; letter-spacing: 2px;">CHRONO LUX — MEN'S TIMEPIECES</p>
+            <p class="mb-0">&copy; 2026 Chrono Lux Inc. Precision Craftsmanship & Luxury Engineering.</p>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

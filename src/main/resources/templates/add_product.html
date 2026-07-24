@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 <head>
-    <title>Add Product</title>
+    <title>Add New Timepiece - Aura Admin</title>
 </head>
 <body>
     <section class="container py-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-sm rounded-3 border-0">
-                    <div class="card-header bg-primary text-white py-3">
-                        <h4 class="mb-0 text-center fw-bold">Add New Product</h4>
+                    <div class="card-header bg-dark text-white py-3 border-bottom border-warning">
+                        <h4 class="mb-0 text-center fw-bold brand-font text-gold">
+                            <i class="fa-solid fa-plus-circle me-2"></i>Add New Timepiece
+                        </h4>
                     </div>
                     <div class="card-body p-4">
                         <form th:action="@{/admin/add_product}" th:object="${product}" method="post" enctype="multipart/form-data">
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold" for="productName">Product Name</label>
-                                    <input class="form-control" type="text" id="productName" th:field="*{productName}" required placeholder="Wireless Headphones" />
+                                    <label class="form-label fw-semibold" for="productName">Watch Model Name</label>
+                                    <input class="form-control" type="text" id="productName" th:field="*{productName}" required placeholder="e.g. Chrono Classic 42mm" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold" for="price">Price ($)</label>
-                                    <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}" required placeholder="99.99" />
+                                    <label class="form-label fw-semibold" for="price">Retail Price (₹)</label>
+                                    <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}" required placeholder="14999.00" />
                                 </div>
                             </div>
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold" for="quantity">Quantity</label>
-                                    <input class="form-control" type="number" id="quantity" th:field="*{quantity}" required placeholder="50" />
+                                    <label class="form-label fw-semibold" for="quantity">Stock Quantity</label>
+                                    <input class="form-control" type="number" id="quantity" th:field="*{quantity}" required placeholder="15" />
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold" for="productImage">Product Image File</label>
+                                    <label class="form-label fw-semibold" for="productImage">Product Photo</label>
                                     <input class="form-control" type="file" id="productImage" name="image" required />
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label fw-semibold" for="productDescription">Description</label>
-                                <textarea class="form-control" id="productDescription" rows="3" th:field="*{productDescription}" required placeholder="Enter item details..."></textarea>
+                                <label class="form-label fw-semibold" for="productDescription">Watch Specifications & Description</label>
+                                <textarea class="form-control" id="productDescription" rows="4" th:field="*{productDescription}" required placeholder="Detail movement type, case material, strap, water resistance..."></textarea>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">Submit Product</button>
+                                <button type="submit" class="btn btn-gold btn-lg fw-bold">Publish Timepiece</button>
                             </div>
                         </form>
                     </div>
                     <div class="card-footer bg-light text-center py-3">
-                        <a th:href="@{/admin/admin_dash}" class="text-decoration-none">← Back to Admin Dashboard</a>
+                        <a th:href="@{/admin/admin_dash}" class="text-decoration-none text-dark fw-semibold">← Return to Admin Dashboard</a>
                     </div>
                 </div>
             </div>
