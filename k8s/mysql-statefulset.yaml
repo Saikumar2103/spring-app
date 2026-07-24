@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: mysql
   namespace: production
+
 spec:
   serviceName: mysql-service
   replicas: 1
@@ -25,14 +26,23 @@ spec:
             - containerPort: 3306
 
           env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: "root123"
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root123"
 
-        - name: MYSQL_DATABASE
-          value: "snapchatdb"
+            - name: MYSQL_DATABASE
+              value: "snapchatdb"
 
-        - name: MYSQL_USER
-          value: "springuser"
+            - name: MYSQL_USER
+              value: "springuser"
 
-        - name: MYSQL_PASSWORD
-          value: "spring123"
+            - name: MYSQL_PASSWORD
+              value: "spring123"
+
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
