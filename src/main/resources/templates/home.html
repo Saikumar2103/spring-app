@@ -359,6 +359,62 @@
             <h2 class="section-heading">UPCOMING EVENTS</h2>
         </div>
     </section>
+<!-- ================= Products Section ================= -->
+
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Our Products</h2>
+        <p class="text-muted">Explore our latest collection</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6"
+             th:each="product : ${products}">
+
+            <div class="card shadow h-100 border-0">
+
+                <img th:if="${product.base64Image}"
+                     th:src="'data:image/jpeg;base64,' + ${product.base64Image}"
+                     class="card-img-top"
+                     style="height:250px;object-fit:cover;"
+                     alt="Product Image">
+
+                <img th:unless="${product.base64Image}"
+                     src="https://via.placeholder.com/400x250"
+                     class="card-img-top"
+                     style="height:250px;object-fit:cover;"
+                     alt="No Image">
+
+                <div class="card-body">
+
+                    <h5 class="card-title fw-bold"
+                        th:text="${product.productName}">
+                        Product Name
+                    </h5>
+
+                    <p class="card-text text-muted"
+                       th:text="${product.productDescription}">
+                        Description
+                    </p>
+
+                    <h4 class="text-success fw-bold">
+                        ₹ <span th:text="${product.price}">0</span>
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= End Products Section ================= -->
+
 
 </body>
 </html>
